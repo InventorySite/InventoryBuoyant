@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Edit Inventory</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<header>
+<h1>Edit Inventory Items</h1>
+</header>
+<div id="admin-container">
+<form id="edit-form">
+<label for="item-name">Item Name:</label>
+<input id="item-name" placeholder="Enter item name" required="" type="text"/>
+<label for="item-quantity">Quantity:</label>
+<input id="item-quantity" placeholder="Enter quantity" required="" type="number"/>
+<button type="submit">Save Item</button>
+</form>
+<div id="inventory-list">
+<!-- Editable list of items will be here -->
+</div>
+</div>
+<footer>
+<p>Go back to <a href="index.html">Inventory List</a></p>
+</footer>
+<script src="admin.js"></script>
+</body>
+</html>
