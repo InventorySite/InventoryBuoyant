@@ -1,6 +1,30 @@
 
 let items = JSON.parse(localStorage.getItem('inventory')) || [];
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+let officeResources = JSON.parse(localStorage.getItem('officeResources')) || [];
+
+// Add dummy data if empty
+if (items.length === 0) {
+    items.push({ name: "Laptop", available: 5, borrowed: 2 });
+    localStorage.setItem('inventory', JSON.stringify(items));
+}
+
+if (transactions.length === 0) {
+    transactions.push({
+        name: "Jane Doe",
+        item: "Laptop",
+        quantity: 1,
+        status: "Borrowed",
+        dateBorrowed: "2025-04-01",
+        dateReturned: ""
+    });
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+
+if (officeResources.length === 0) {
+    officeResources.push({ name: "Whiteboard Markers", quantity: 20 });
+    localStorage.setItem('officeResources', JSON.stringify(officeResources));
+}
 
 const editForm = document.getElementById('edit-form');
 const nameInput = document.getElementById('item-name');
@@ -18,6 +42,7 @@ const transactionList = document.getElementById('transaction-list');
 function saveToLocalStorage() {
     localStorage.setItem('inventory', JSON.stringify(items));
     localStorage.setItem('transactions', JSON.stringify(transactions));
+    localStorage.setItem('officeResources', JSON.stringify(officeResources));
 }
 
 function renderInventory() {
@@ -137,8 +162,6 @@ borrowForm.addEventListener('submit', function (e) {
 renderInventory();
 renderTransactions();
 
-
-// Auto-fill today's date in the "date-borrowed" field
 document.addEventListener("DOMContentLoaded", () => {
     const today = new Date().toISOString().split("T")[0];
     const dateBorrowedInput = document.getElementById("date-borrowed");
@@ -147,8 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-// Auto-fill return date when status is set to "Returned"
 document.getElementById("borrow-status").addEventListener("change", function () {
     const returnDate = document.getElementById("date-returned");
     if (this.value === "Returned" && !returnDate.value) {
@@ -156,14 +177,6 @@ document.getElementById("borrow-status").addEventListener("change", function () 
         returnDate.value = today;
     }
 });
-
-
-let officeResources = JSON.parse(localStorage.getItem('officeResources')) || [];
-
-const officeForm = document.getElementById('office-form');
-const officeNameInput = document.getElementById('office-item-name');
-const officeQtyInput = document.getElementById('office-quantity');
-const officeList = document.getElementById('office-list');
 
 function renderOfficeResources() {
     officeList.innerHTML = '';
@@ -189,7 +202,7 @@ function editOfficeResource(index) {
 
 function deleteOfficeResource(index) {
     officeResources.splice(index, 1);
-    localStorage.setItem('officeResources', JSON.stringify(officeResources));
+    saveToLocalStorage();
     renderOfficeResources();
 }
 
@@ -207,14 +220,12 @@ officeForm.addEventListener('submit', function (e) {
         officeResources.push({ name, quantity });
     }
 
-    localStorage.setItem('officeResources', JSON.stringify(officeResources));
+    saveToLocalStorage();
     renderOfficeResources();
     officeForm.reset();
 });
 
 renderOfficeResources();
-
-
 
 function filterAndRender() {
   const search = document.getElementById('search-input')?.value.toLowerCase() || '';
@@ -253,7 +264,6 @@ function filterAndRender() {
   }
 }
 
-// Attach listeners
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('search-input')?.addEventListener('input', filterAndRender);
   document.getElementById('filter-select')?.addEventListener('change', filterAndRender);
