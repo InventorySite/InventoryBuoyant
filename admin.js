@@ -4,27 +4,11 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let officeResources = JSON.parse(localStorage.getItem('officeResources')) || [];
 
 // Add dummy data if empty
-if (items.length === 0) {
-    items.push({ name: "Laptop", available: 5, borrowed: 2 });
-    localStorage.setItem('inventory', JSON.stringify(items));
-}
 
-if (transactions.length === 0) {
-    transactions.push({
-        name: "Jane Doe",
-        item: "Laptop",
-        quantity: 1,
-        status: "Borrowed",
-        dateBorrowed: "2025-04-01",
-        dateReturned: ""
-    });
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-}
 
-if (officeResources.length === 0) {
-    officeResources.push({ name: "Whiteboard Markers", quantity: 20 });
-    localStorage.setItem('officeResources', JSON.stringify(officeResources));
-}
+
+
+
 
 const editForm = document.getElementById('edit-form');
 const nameInput = document.getElementById('item-name');
