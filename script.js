@@ -64,6 +64,53 @@ function displayTransactions() {
     });
 }
 
+
+function filterAndRender() {
+  const search = document.getElementById('search-input')?.value.toLowerCase() || '';
+  const filter = document.getElementById('filter-select')?.value || 'all';
+
+  const stockroomContainer = document.getElementById('items-container');
+  const officeContainer = document.getElementById('office-container');
+  stockroomContainer.innerHTML = '';
+  officeContainer.innerHTML = '';
+
+  if (filter === 'all' || filter === 'stockroom') {
+    items
+      .filter(item => item.name.toLowerCase().includes(search))
+      .forEach(item => {
+        const div = document.createElement('div');
+        div.classList.add('item');
+        div.innerHTML = `
+          ${item.image ? `<img src="${item.image}" class="item-image" alt="Item Image"/>` : ""}
+          <h3>${item.name}</h3>
+          <p><strong>Available:</strong> ${item.available || item.quantity || 0}</p>
+          <p class="borrowed"><strong>Borrowed:</strong> ${getBorrowedCount(item.name)}</p>
+        `;
+        stockroomContainer.appendChild(div);
+      });
+  }
+
+  if (filter === 'all' || filter === 'office') {
+    officeResources
+      .filter(resource => resource.name.toLowerCase().includes(search))
+      .forEach(resource => {
+        const div = document.createElement('div');
+        div.classList.add('item');
+        div.innerHTML = `
+          <h3>${resource.name}</h3>
+          <p><strong>Quantity:</strong> ${resource.quantity}</p>
+        `;
+        officeContainer.appendChild(div);
+      });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('search-input')?.addEventListener('input', filterAndRender);
+  document.getElementById('filter-select')?.addEventListener('change', filterAndRender);
+});
+
+
 window.onload = function () {
     displayItems();
     displayTransactions();
